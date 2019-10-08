@@ -41,6 +41,7 @@ module CloudPayments
         def convert_keys_to_api(attributes)
           attributes.each_with_object({}) do |(key, value), result|
             value = convert_keys_to_api(value) if value.is_a?(Hash) && (key.to_s != 'json_data')
+            value = value.map { |v| convert_keys_to_api(v) } if value.is_a?(Array)
 
             key = key.to_s.gsub(/^[a-z\d]*/){ $&.capitalize }
             key.gsub!(/(?:_|(\/))([a-z\d]*)/i){ "#{$1}#{$2.capitalize}" }
